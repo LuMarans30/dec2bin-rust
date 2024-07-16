@@ -3,6 +3,7 @@ mod converter;
 
 use app::App;
 use std::io::{self, Write};
+use std::time::Instant;
 
 fn main() -> io::Result<()> {
     let mut app = App::new();
@@ -21,7 +22,6 @@ fn main() -> io::Result<()> {
 
         match choice.trim() {
             "1" | "2" | "3" => {
-                use std::time::Instant;
                 let now = Instant::now();
                 app.set_method(choice.trim().parse::<usize>().unwrap() - 1);
                 let elapsed = now.elapsed();
