@@ -8,7 +8,7 @@ fn main() -> io::Result<()> {
     let mut app = App::new();
 
     loop {
-        println!("1. Iterative method");
+        println!("\n1. Iterative method");
         println!("2. Recursive method");
         println!("3. Lookup table method (fastest method)");
         println!("4. Exit");
