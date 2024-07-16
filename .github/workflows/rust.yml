@@ -6,8 +6,6 @@ permissions:
 on:
   release:
     types: [created]
-    tags:
-      - v[0-9]+.*
 
 jobs:
   create-release:
