@@ -23,7 +23,6 @@ defaults:
 
 jobs:
   create-release:
-    if: github.repository_owner == 'taiki-e'
     uses: taiki-e/github-actions/.github/workflows/create-release.yml@main
     permissions:
       contents: write
@@ -31,7 +30,6 @@ jobs:
 
   upload-assets:
     name: ${{ matrix.target }}
-    if: github.repository_owner == 'taiki-e'
     needs: create-release
     strategy:
       matrix:
@@ -52,7 +50,7 @@ jobs:
           - target: x86_64-unknown-illumos
           - target: universal-apple-darwin
             os: macos-12
-    runs-on: ${{ matrix.os || 'ubuntu-20.04' }}
+    runs-on: ${{ matrix.os || 'ubuntu-latest' }}
     timeout-minutes: 60
     permissions:
       contents: write
