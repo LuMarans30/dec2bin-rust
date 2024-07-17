@@ -5,6 +5,7 @@ use num_traits::{One, ToPrimitive, Zero};
 * Function to convert a decimal number to binary using an iterative approach (loop)
 * The function divides the decimal number by 2 iteratively and gets the remainder
 * The result is a vector of binary digits
+* This is the slowest algorithm amongst the three.
 */
 pub fn decimal_to_binary_iterative(dec: &BigUint) -> Vec<u8> {
     if dec.is_zero() {
@@ -26,6 +27,7 @@ pub fn decimal_to_binary_iterative(dec: &BigUint) -> Vec<u8> {
 * Function to convert a decimal number to binary using recursion (call stack)
 * The function calls itself recursively to divide the decimal number by 2 and get the remainder
 * The result is a string of binary digits
+* This is much faster than the iterative algorithm
 */
 pub fn decimal_to_binary_recursive(dec: &BigUint) -> String {
     if dec > &BigUint::one() {
@@ -40,7 +42,8 @@ pub fn decimal_to_binary_recursive(dec: &BigUint) -> String {
 * The lookup table is an array of strings with the binary representation of each hexadecimal digit
 * The function converts the decimal number to hexadecimal and then uses the lookup table to get the binary representation
 * The result is a string of binary digits
-* Due to the use of a lookup table, this method is the fastest among the three
+* Due to the use of a lookup table, this method is the fastest amongst the three, especially for VERY large
+* numbers.
 */
 pub fn decimal_to_binary_lookup(dec: &BigUint) -> String {
     let bin: [&str; 16] = [

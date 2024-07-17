@@ -29,13 +29,20 @@ impl App {
         self.method = method;
     }
 
+    pub fn set_input(&mut self, input: String) {
+        self.input = input;
+    }
+
     pub fn convert(&mut self) -> Result<(), String> {
-        print!("\nEnter a decimal number: ");
-        io::stdout().flush().unwrap();
-        self.input.clear();
-        io::stdin()
-            .read_line(&mut self.input)
-            .map_err(|e| e.to_string())?;
+
+        if self.input.len() == 0 {
+            print!("\nEnter a decimal number: ");
+            io::stdout().flush().unwrap();
+            self.input.clear();
+            io::stdin()
+                .read_line(&mut self.input)
+                .map_err(|e| e.to_string())?;
+        }
 
         let dec = self
             .input

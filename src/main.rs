@@ -4,11 +4,21 @@ mod converter;
 use app::App;
 use std::io::{self, Write};
 use std::time::Instant;
+use std::env;
 
 fn main() -> io::Result<()> {
     let mut app = App::new();
 
+    let args: Vec<String> = env::args().collect();
+  
+    let mut input: &String = &String::new();
+
+    if args.len() == 2 {
+        input = &args[1];
+    }
+
     loop {
+
         //Menu options for the user
         println!("\n1. Iterative method");
         println!("2. Recursive method");
@@ -25,6 +35,15 @@ fn main() -> io::Result<()> {
             "1" | "2" | "3" => {
                 //Benchmarking the time taken to convert the decimal number
                 let now = Instant::now();
+                
+                app.set_input(
+                    if input.len() != 0 {
+                        input.to_string()
+                    } else {
+                        String::new()
+                    }
+                );
+
                 app.set_method(choice.trim().parse::<usize>().unwrap() - 1);
                 let elapsed = now.elapsed();
                 if let Err(e) = app.convert() {
