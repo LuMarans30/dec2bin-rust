@@ -8,6 +8,14 @@ pub struct App {
     result: String,
 }
 
+/*
+* impl block with the following methods:
+* new() function to create a new instance of App
+* set_method() function to set the method field
+* convert() function to convert the input to binary based on the method field
+* get_result() function to get the result field
+*/
+
 impl App {
     pub fn new() -> App {
         App {

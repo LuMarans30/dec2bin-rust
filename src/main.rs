@@ -9,6 +9,7 @@ fn main() -> io::Result<()> {
     let mut app = App::new();
 
     loop {
+        //Menu options for the user
         println!("\n1. Iterative method");
         println!("2. Recursive method");
         println!("3. Lookup table method (fastest method)");
@@ -22,6 +23,7 @@ fn main() -> io::Result<()> {
 
         match choice.trim() {
             "1" | "2" | "3" => {
+                //Benchmarking the time taken to convert the decimal number
                 let now = Instant::now();
                 app.set_method(choice.trim().parse::<usize>().unwrap() - 1);
                 let elapsed = now.elapsed();
