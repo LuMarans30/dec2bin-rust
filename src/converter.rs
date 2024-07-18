@@ -1,70 +1,85 @@
+use std::collections::VecDeque;
+
 use num_bigint::BigUint;
 use num_traits::{One, ToPrimitive, Zero};
 
 /*
 * Function to convert a decimal number to binary using an iterative approach (loop)
-* The function divides the decimal number by 2 iteratively and gets the remainder
-* The result is a vector of binary digits
-* This is the slowest algorithm amongst the three.
+* The function divides the decimal number by 2 iteratively and gets the remainder, which is added to the front of the result vector
+* This method is the slowest method amongst the three but slightly faster than the recursive method for large numbers
 */
-pub fn decimal_to_binary_iterative(dec: &BigUint) -> Vec<u8> {
+pub fn decimal_to_binary_iterative(dec: &BigUint) -> VecDeque<u8> {
     if dec.is_zero() {
-        return vec![0];
+        return VecDeque::from([0]);
     }
-    let mut result = Vec::new();
+    let mut result = VecDeque::new();
     let mut n = dec.clone();
     let two = BigUint::from(2u8);
     while !n.is_zero() {
         let bit = (&n % &two).to_u8().unwrap_or(0);
-        result.push(bit);
+        result.push_front(bit);
         n /= &two;
     }
-    result.reverse();
     result
 }
 
 /*
 * Function to convert a decimal number to binary using recursion (call stack)
 * The function calls itself recursively to divide the decimal number by 2 and get the remainder
-* The result is a string of binary digits
-* This is much faster than the iterative algorithm
+* This method is faster than the iterative method in most cases
 */
 pub fn decimal_to_binary_recursive(dec: &BigUint) -> String {
-    if dec > &BigUint::one() {
-        format!("{}{}", decimal_to_binary_recursive(&(dec / 2u8)), dec % 2u8)
-    } else {
-        format!("{}", dec % 2u8)
+    fn recursive_helper(dec: &BigUint, result: &mut String) {
+        if dec > &BigUint::one() {
+            recursive_helper(&(dec / 2u8), result);
+        }
+        result.push_str(&format!("{}", dec % 2u8));
     }
+
+    let mut result = String::new();
+    recursive_helper(dec, &mut result);
+    result
 }
 
 /*
 * Function to convert a decimal number to binary using a lookup table
 * The lookup table is an array of strings with the binary representation of each hexadecimal digit
 * The function converts the decimal number to hexadecimal and then uses the lookup table to get the binary representation
-* The result is a string of binary digits
-* Due to the use of a lookup table, this method is the fastest amongst the three, especially for VERY large
-* numbers.
+* Due to the use of a lookup table, this method is the fastest amongst the three for any size of decimal number
 */
-pub fn decimal_to_binary_lookup(dec: &BigUint) -> String {
-    let bin: [&str; 16] = [
-        "0000", "0001", "0010", "0011", "0100", "0101", "0110", "0111", "1000", "1001", "1010",
-        "1011", "1100", "1101", "1110", "1111",
-    ];
+const BIN_LOOKUP: [u16; 16] = [
+    0b0000, 0b0001, 0b0010, 0b0011, 0b0100, 0b0101, 0b0110, 0b0111, 0b1000, 0b1001, 0b1010, 0b1011,
+    0b1100, 0b1101, 0b1110, 0b1111,
+];
 
-    let mut result = String::new();
+pub fn decimal_to_binary_lookup(dec: &BigUint) -> String {
+    if dec.is_zero() {
+        return "0".to_string();
+    }
+
+    let mut result = Vec::new();
     let mut n = dec.clone();
     let sixteen = BigUint::from(16u8);
     let zero = BigUint::zero();
 
-    if n.is_zero() {
-        return "0000".to_string();
-    }
-
     while n > zero {
         let index = (&n % &sixteen).to_u8().unwrap();
-        result = format!("{}{}", bin[index as usize], result);
+        let binary = BIN_LOOKUP[index as usize];
+
+        // Push each bit of the 4-bit binary number
+        for i in (0..4).rev() {
+            result.push(if (binary & (1 << i)) != 0 { '1' } else { '0' });
+        }
+
         n /= &sixteen;
     }
 
-    result.trim().to_string()
+    // Trim leading zeros and reverse the result
+    let trimmed: String = result.into_iter().rev().skip_while(|&c| c == '0').collect();
+
+    if trimmed.is_empty() {
+        "0".to_string()
+    } else {
+        trimmed
+    }
 }

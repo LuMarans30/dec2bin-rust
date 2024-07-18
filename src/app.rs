@@ -1,10 +1,38 @@
 use crate::converter;
 use num_bigint::BigUint;
-use std::io::{self, Write};
+
+/*
+* The methods are defined in an enum called ConversionMethod with three variants
+*/
+pub enum ConversionMethod {
+    Iterative,
+    Recursive,
+    Lookup,
+}
+
+impl ConversionMethod {
+    fn convert(&self, dec: &BigUint) -> String {
+        match self {
+            ConversionMethod::Iterative => format!(
+                "Iterative: {}",
+                converter::decimal_to_binary_iterative(dec)
+                    .into_iter()
+                    .map(|d| d.to_string())
+                    .collect::<String>()
+            ),
+            ConversionMethod::Recursive => {
+                format!("Recursive: {}", converter::decimal_to_binary_recursive(dec))
+            }
+            ConversionMethod::Lookup => {
+                format!("Lookup: {}", converter::decimal_to_binary_lookup(dec))
+            }
+        }
+    }
+}
 
 pub struct App {
     input: String,
-    method: usize,
+    method: ConversionMethod,
     result: String,
 }
 
@@ -15,17 +43,16 @@ pub struct App {
 * convert() function to convert the input to binary based on the method field
 * get_result() function to get the result field
 */
-
 impl App {
     pub fn new() -> App {
         App {
             input: String::new(),
-            method: 0,
+            method: ConversionMethod::Iterative,
             result: String::new(),
         }
     }
 
-    pub fn set_method(&mut self, method: usize) {
+    pub fn set_method(&mut self, method: ConversionMethod) {
         self.method = method;
     }
 
@@ -34,37 +61,13 @@ impl App {
     }
 
     pub fn convert(&mut self) -> Result<(), String> {
-
-        if self.input.len() == 0 {
-            print!("\nEnter a decimal number: ");
-            io::stdout().flush().unwrap();
-            self.input.clear();
-            io::stdin()
-                .read_line(&mut self.input)
-                .map_err(|e| e.to_string())?;
-        }
-
         let dec = self
             .input
             .trim()
             .parse::<BigUint>()
             .map_err(|e| e.to_string())?;
 
-        self.result = match self.method {
-            0 => format!(
-                "Iterative: {}",
-                converter::decimal_to_binary_iterative(&dec)
-                    .iter()
-                    .map(|&d| d.to_string())
-                    .collect::<String>()
-            ),
-            1 => format!(
-                "Recursive: {}",
-                converter::decimal_to_binary_recursive(&dec)
-            ),
-            2 => format!("Lookup: {}", converter::decimal_to_binary_lookup(&dec)),
-            _ => unreachable!(),
-        };
+        self.result = self.method.convert(&dec);
 
         Ok(())
     }
