@@ -6,7 +6,6 @@ use num_traits::{One, ToPrimitive, Zero};
 /*
 * Function to convert a decimal number to binary using an iterative approach (loop)
 * The function divides the decimal number by 2 iteratively and gets the remainder, which is added to the front of the result vector
-* This method is the slowest method amongst the three but slightly faster than the recursive method for large numbers
 */
 pub fn decimal_to_binary_iterative(dec: &BigUint) -> VecDeque<u8> {
     if dec.is_zero() {
@@ -26,7 +25,6 @@ pub fn decimal_to_binary_iterative(dec: &BigUint) -> VecDeque<u8> {
 /*
 * Function to convert a decimal number to binary using recursion (call stack)
 * The function calls itself recursively to divide the decimal number by 2 and get the remainder
-* This method is faster than the iterative method in most cases
 */
 pub fn decimal_to_binary_recursive(dec: &BigUint) -> String {
     fn recursive_helper(dec: &BigUint, result: &mut String) {
