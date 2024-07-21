@@ -77,8 +77,8 @@ pub fn decimal_to_binary_lookup(dec: &BigUint) -> String {
     let trimmed: String = result.into_iter().rev().skip_while(|&c| c == '0').collect();
 
     if trimmed.is_empty() {
-        "0".to_string()
-    } else {
-        trimmed
+        return "0".to_string();
     }
+
+    trimmed
 }

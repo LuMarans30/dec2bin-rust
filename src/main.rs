@@ -18,11 +18,7 @@ fn main() -> io::Result<()> {
 
     loop {
         //Menu options for the user
-        println!("\n1. Iterative method");
-        println!("2. Recursive method");
-        println!("3. Lookup table method (fastest method)");
-        println!("4. Exit");
-        print!("Choose a method (1-4): ");
+        print!("\n1. Iterative method\n2. Recursive method\n3. Lookup table method (fastest method)\n4. Exit\nChoose a method (1-4): ");
 
         io::stdout().flush()?;
 
