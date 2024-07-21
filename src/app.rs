@@ -13,13 +13,9 @@ pub enum ConversionMethod {
 impl ConversionMethod {
     fn convert(&self, dec: &BigUint) -> String {
         match self {
-            ConversionMethod::Iterative => format!(
-                "Iterative: {}",
-                converter::decimal_to_binary_iterative(dec)
-                    .into_iter()
-                    .map(|d| d.to_string())
-                    .collect::<String>()
-            ),
+            ConversionMethod::Iterative => {
+                format!("Iterative: {}", converter::decimal_to_binary_iterative(dec))
+            }
             ConversionMethod::Recursive => {
                 format!("Recursive: {}", converter::decimal_to_binary_recursive(dec))
             }

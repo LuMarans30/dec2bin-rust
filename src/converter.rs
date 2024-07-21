@@ -7,9 +7,9 @@ use num_traits::{One, ToPrimitive, Zero};
 * Function to convert a decimal number to binary using an iterative approach (loop)
 * The function divides the decimal number by 2 iteratively and gets the remainder, which is added to the front of the result vector
 */
-pub fn decimal_to_binary_iterative(dec: &BigUint) -> VecDeque<u8> {
+pub fn decimal_to_binary_iterative(dec: &BigUint) -> String {
     if dec.is_zero() {
-        return VecDeque::from([0]);
+        return "0".to_string();
     }
     let mut result = VecDeque::new();
     let mut n = dec.clone();
@@ -19,7 +19,8 @@ pub fn decimal_to_binary_iterative(dec: &BigUint) -> VecDeque<u8> {
         result.push_front(bit);
         n /= &two;
     }
-    result
+
+    result.into_iter().map(|b| b.to_string()).collect()
 }
 
 /*
