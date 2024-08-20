@@ -15,7 +15,9 @@ This project provides a basic CLI for converting decimal numbers to their binary
 ## Usage
 
 To use this tool, run it from the command line:
+```bash
 cargo run [optional_decimal_number]
+```
 
 Alternatively, [precompiled binaries for most platforms](https://github.com/LuMarans30/dec2bin-rust/releases/latest) are available.
 
