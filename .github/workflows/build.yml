@@ -75,8 +75,3 @@ jobs:
           gh release upload ${{github.event.release.tag_name}} \
              ./target/${{ matrix.target }}/release/${{ matrix.name }} \
              ./target/${{ matrix.target }}/release/${{ matrix.name }}.sha256
-      - run: cargo doc
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
-        with:
-          path: "target/doc"
