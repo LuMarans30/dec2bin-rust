@@ -1,17 +1,18 @@
-use std::{io::Write, ops::Div};
-
 use crate::converter;
 use num_bigint::BigUint;
+use std::{io::Write, ops::Div};
 
-/*
-* The methods are defined in an enum called ConversionMethod with three variants
-*/
 pub enum ConversionMethod {
     Iterative,
     Recursive,
     Lookup,
 }
 
+/**
+impl block with the following methods:
+- [`ConversionMethod::convert`] function to convert the decimal number to binary based on the selected method. It uses a match expression to call the corresponding function from the [`converter`] module
+- [`ConversionMethod::get_name`] function to get the name of the method
+*/
 impl ConversionMethod {
     fn convert(&self, dec: &BigUint) -> String {
         match self {
@@ -42,15 +43,16 @@ pub struct App {
     result: String,
 }
 
-/*
-* impl block with the following methods:
-* new() function to create a new instance of App
-* set_method() function to set the method field
-* convert() function to convert the input to binary based on the method field
-* benchmark() function to benchmark the three methods for a given number of iterations
-* get_result() function to get the result field
+/**
+impl block with the following methods:
+- [`App::new`] function to create a new instance of App
+- [`App::set_method`] function to set the method field
+- [`App::convert`] function to convert the input to binary based on the method field
+- [`App::benchmark`] function to benchmark the three methods for a given number of iterations
+- [`App::get_result`] function to get the result field
 */
 impl App {
+    /// App struct with the input decimal number, conversion method, and result binary number
     pub fn new() -> App {
         App {
             input: String::new(),
@@ -67,6 +69,7 @@ impl App {
         self.input = input;
     }
 
+    /// Converts the input decimal number to binary based on the selected method
     pub fn convert(&mut self) -> Result<(), String> {
         let dec = self
             .input
@@ -79,6 +82,7 @@ impl App {
         Ok(())
     }
 
+    /// Benchmarks the three conversion methods for a given number of iterations and returns the mean elapsed time
     pub fn benchmark(&self) -> String {
         let dec = self
             .input
