@@ -25,7 +25,7 @@ Alternatively, [precompiled binaries for most platforms](https://github.com/LuMa
 
 1. **Iterative**: Uses a loop to perform the conversion. It divides the decimal number by 2 iteratively and gets the remainder.
 2. **Recursive**: Same algorithm as iterative method, but recursively.
-3. **Lookup Table**: Uses a pre-computed lookup table for faster conversion (generally the fastest method).
+3. **Lookup Table**: Uses a lookup table that contains all possible 4-bit binary strings for faster conversion (generally the fastest method).
 
 ## Features
 
