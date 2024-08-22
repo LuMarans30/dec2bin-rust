@@ -1,3 +1,5 @@
+use std::{io::Write, ops::Div};
+
 use crate::converter;
 use num_bigint::BigUint;
 
@@ -24,6 +26,14 @@ impl ConversionMethod {
             }
         }
     }
+
+    fn get_name(&self) -> &str {
+        match self {
+            ConversionMethod::Iterative => "Iterative",
+            ConversionMethod::Recursive => "Recursive",
+            ConversionMethod::Lookup => "Lookup",
+        }
+    }
 }
 
 pub struct App {
@@ -37,6 +47,7 @@ pub struct App {
 * new() function to create a new instance of App
 * set_method() function to set the method field
 * convert() function to convert the input to binary based on the method field
+* benchmark() function to benchmark the three methods for a given number of iterations
 * get_result() function to get the result field
 */
 impl App {
@@ -66,6 +77,42 @@ impl App {
         self.result = self.method.convert(&dec);
 
         Ok(())
+    }
+
+    pub fn benchmark(&self) -> String {
+        let dec = self
+            .input
+            .trim()
+            .parse::<BigUint>()
+            .expect("Invalid number");
+
+        print!("\nHow many iterations? ");
+        let mut input = String::new();
+        std::io::stdout().flush().expect("Failed to flush stdout");
+        let _ = std::io::stdin().read_line(&mut input);
+        let n_it = input.trim().parse::<u32>().expect("Invalid number");
+
+        let methods = vec![
+            ConversionMethod::Iterative,
+            ConversionMethod::Recursive,
+            ConversionMethod::Lookup,
+        ];
+
+        let mut results = String::new();
+        for method in methods {
+            let now = std::time::Instant::now();
+            for _ in 0..n_it {
+                let _ = method.convert(&dec);
+            }
+            let elapsed = now.elapsed();
+            results.push_str(&format!(
+                "\t{} method: {:.2?}\n",
+                method.get_name(),
+                elapsed.div(n_it)
+            ));
+        }
+
+        format!("\nMean elapsed time:\n\n{}", results)
     }
 
     pub fn get_result(&self) -> &str {
