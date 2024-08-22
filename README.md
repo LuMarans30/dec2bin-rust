@@ -30,7 +30,7 @@ Alternatively, [precompiled binaries for most platforms](https://github.com/LuMa
 ## Features
 
 - Supports conversion of large numbers using the `num_bigint` crate
-- Measures and displays the time taken for each conversion
+- Measures and displays the mean time taken for N iterations for each conversion method.
 
 If you provide a decimal number as an argument, the program will use that for conversions. Otherwise, it will prompt you to enter a number.
 
